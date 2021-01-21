@@ -1,11 +1,16 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
         mavenCentral()
+        maven { url='https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -13,37 +18,25 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.3-b0.3.0'
-group = 'com.hbn.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version =  "${minecraft_version}-${mod_version}"
+group = 'io.github.how_bout_no.outvoted' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'outvoted'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println('Mod Version: [' + "${mod_version}" + '] MC Version: [' + "${minecraft_version}" + '] Mappings Version: [' + "${mappings_version}" + '] Loader Version: [' + "${loader_version}" + '] Forge Version: [' + "${forge_version}" + '] Geckolib Version: [' + "${geckolib_version}" + ']')
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
-    //mappings channel: 'snapshot', version: '20200514-1.16'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings channel: "snapshot", version: "${mappings_version}"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
+            arg '-mixin.config=outvoted.mixins.json'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
             mods {
                 outvoted {
                     source sourceSets.main
@@ -53,13 +46,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
+            arg '-mixin.config=outvoted.mixins.json'
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
             mods {
                 outvoted {
                     source sourceSets.main
@@ -69,15 +58,9 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'outvoted', '--all', '--output', file('src/generated/resources/')
-
+            args '--mod', 'outvoted', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
                 outvoted {
                     source sourceSets.main
@@ -89,36 +72,19 @@ minecraft {
 
 repositories {
     maven { url 'https://repo.repsy.io/mvn/gandiber/geckolib' }
+    maven { url='https://dist.creeper.host/Sponge/maven' }
+    //maven { url "https://www.cursemaven.com" }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.16.4-35.0.2'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-    implementation fg.deobf('software.bernie.geckolib:forge-1.16.3-geckolib:2.1.2')
+    implementation fg.deobf("software.bernie.geckolib:forge-1.16.4-geckolib:${geckolib_version}")
+    compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
 
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    //implementation fg.deobf("curse.maven:extraboats-337396:3154939")
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
@@ -126,18 +92,46 @@ jar {
             "Specification-Vendor": "HowBoutNo",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${mod_version}",
             "Implementation-Vendor" :"HowBoutNo",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "outvoted.mixins.json"
         ])
     }
 }
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
+jar.finalizedBy('reobfJar')
+
+buildscript {
+    def updateJsonFile = file('update.json')
+    def updateJson = new JsonSlurper().parse(updateJsonFile) as Map
+
+    // Update promos
+    updateJson.promos."1.16.4-latest" = "${mod_version}"
+    updateJson.promos."1.16.4-recommended" = "${mod_version}"
+    updateJson.promos."1.16.3-latest" = "${mod_version}"
+    updateJson.promos."1.16.3-recommended" = "${mod_version}"
+
+    updateJsonFile.write(JsonOutput.prettyPrint(JsonOutput.toJson(updateJson)))
+}
+
+// Process resources on build
+processResources {
+    outputs.upToDateWhen { false }
+
+    // Replace stuff in mods.toml, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+
+        // Replace version
+        expand 'version':"${mod_version}", 'loader':"${loader_version}"
+    }
+
+    // Copy everything else except the mods.toml
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'META-INF/mods.toml'
+    }
+}
 
 publishing {
     publications {
@@ -150,4 +144,10 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+mixin {
+    add sourceSets.main, "outvoted.refmap.json"
 }
