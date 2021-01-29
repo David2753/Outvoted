@@ -3,8 +3,6 @@
 !/gradle
 !/src
 
-/src/generated/resources/.cache
-
 !/build.gradle
 !/gradle.properties
 !/gradlew

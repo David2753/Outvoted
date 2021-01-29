@@ -1,13 +1,13 @@
 package io.github.how_bout_no.outvoted.init;
 
 import io.github.how_bout_no.outvoted.Outvoted;
-import io.github.how_bout_no.outvoted.block.ModBlockItems.*;
+import io.github.how_bout_no.outvoted.block.ModBlockItems.ModBlockItem;
+import io.github.how_bout_no.outvoted.block.ModBlockItems.ModDecoBlockItem;
+import io.github.how_bout_no.outvoted.block.ModBlockItems.ModSignItem;
+import io.github.how_bout_no.outvoted.block.ModBlockItems.ModTallBlockItem;
 import io.github.how_bout_no.outvoted.block.PalmSaplingBlock;
 import net.minecraft.block.*;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,13 +55,4 @@ public class ModBlocks {
     public static final RegistryObject<Item> PALM_TRAPDOOR_ITEM = BLOCK_ITEMS.register("palm_trapdoor", () -> new ModBlockItem(PALM_TRAPDOOR.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_DOOR_ITEM = BLOCK_ITEMS.register("palm_door", () -> new ModTallBlockItem(PALM_DOOR.get(), new Item.Properties()));
     public static final RegistryObject<Item> PALM_SIGN_ITEM = BLOCK_ITEMS.register("palm_sign", () -> new ModSignItem(new Item.Properties(), PALM_SIGN.get(), PALM_WALL_SIGN.get()));
-
-
-    public static Boolean allowsSpawnOnLeaves(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity) {
-        return entity == EntityType.OCELOT || entity == EntityType.PARROT;
-    }
-
-    public static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
-        return false;
-    }
 }
