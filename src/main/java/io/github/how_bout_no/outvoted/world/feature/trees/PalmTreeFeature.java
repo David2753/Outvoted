@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.world.feature.tree;
+package io.github.how_bout_no.outvoted.world.feature.trees;
 
 import com.mojang.serialization.Codec;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
