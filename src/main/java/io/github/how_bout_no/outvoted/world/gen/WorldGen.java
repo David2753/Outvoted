@@ -59,7 +59,7 @@ public class WorldGen {
         }
 
         /* Features */
-        if (biomename.equals("minecraft:desert")) {
+        if (biomename.equals("minecraft:desert_lakes")) {
             event.getGeneration().withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.Configured.PALM_TREE);
         }
     }
