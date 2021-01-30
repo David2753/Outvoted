@@ -2,6 +2,7 @@ package io.github.how_bout_no.outvoted.util;
 
 import io.github.how_bout_no.outvoted.Outvoted;
 import io.github.how_bout_no.outvoted.client.render.HungerRenderer;
+import io.github.how_bout_no.outvoted.client.render.InfernoHelmetRenderer;
 import io.github.how_bout_no.outvoted.client.render.InfernoRenderer;
 import io.github.how_bout_no.outvoted.client.render.KrakenRenderer;
 import io.github.how_bout_no.outvoted.entity.HungerEntity;
@@ -9,6 +10,7 @@ import io.github.how_bout_no.outvoted.entity.InfernoEntity;
 import io.github.how_bout_no.outvoted.entity.KrakenEntity;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
 import io.github.how_bout_no.outvoted.init.ModEntityTypes;
+import io.github.how_bout_no.outvoted.item.InfernoHelmetItem;
 import io.github.how_bout_no.outvoted.item.ModSpawnEggItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -25,6 +27,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Mod.EventBusSubscriber(modid = Outvoted.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEventBusSubscriber {
@@ -35,6 +38,9 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.INFERNO.get(), InfernoRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.HUNGER.get(), HungerRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.KRAKEN.get(), KrakenRenderer::new);
+
+        GeoArmorRenderer.registerArmorRenderer(InfernoHelmetItem.class, new InfernoHelmetRenderer());
+
         RenderTypeLookup.setRenderLayer(ModBlocks.PALM_SAPLING.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.PALM_TRAPDOOR.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.PALM_DOOR.get(), RenderType.getCutout());

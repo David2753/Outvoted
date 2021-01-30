@@ -5,6 +5,9 @@
   "refmap": "outvoted.refmap.json",
   "mixins": [
     "MixinBlazeEntity",
+    "MixinGeoArmorItem"
+  ],
+  "client": [
     "MixinBlazeRenderer"
   ],
   "minVersion": "0.8"
