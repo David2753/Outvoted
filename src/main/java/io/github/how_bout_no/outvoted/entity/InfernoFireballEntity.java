@@ -3,11 +3,9 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -23,16 +21,8 @@ public class InfernoFireballEntity extends AbstractFireballEntity {
     public double explosionPower = OutvotedConfig.COMMON.infernofireballexplosionpower.get();
     public boolean doExplode = OutvotedConfig.COMMON.infernodofireballexplosion.get();
 
-    public InfernoFireballEntity(EntityType<? extends SmallFireballEntity> p_i50160_1_, World p_i50160_2_) {
-        super(p_i50160_1_, p_i50160_2_);
-    }
-
     public InfernoFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
-    }
-
-    public InfernoFireballEntity(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
-        super(SMALL_FIREBALL, x, y, z, accelX, accelY, accelZ, worldIn);
     }
 
     /**
