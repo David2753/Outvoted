@@ -1,4 +1,4 @@
-package io.github.how_bout_no.outvoted.world.feature.tree;
+package io.github.how_bout_no.outvoted.world.feature.trees;
 
 import com.mojang.serialization.Codec;
 import io.github.how_bout_no.outvoted.init.ModBlocks;
@@ -80,7 +80,7 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
                 boolean flag1 = false;
 
                 for (int i2 = 0; i2 < i; ++i2) {
-                    if (!flag1 && ((i2 >= i/2 && random.nextFloat() > 0.5F) || i2 == i-2)) {
+                    if (!flag1 && ((i2 >= i / 2 && random.nextFloat() > 0.5F) || i2 == i - 2)) {
                         int rand = random.nextInt(2);
                         if (rand == 0) rand -= 1;
                         if (random.nextFloat() > 0.5F) {
@@ -100,7 +100,7 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
                     }
                 }
 
-                for (BlockPos blockpos1 : BlockPos.getAllInBoxMutable(blockpos.add(-(i-2), -1, -(i-2)), blockpos.add(i-2, 2, i-2))) {
+                for (BlockPos blockpos1 : BlockPos.getAllInBoxMutable(blockpos.add(-(i - 2), -1, -(i - 2)), blockpos.add(i - 2, 2, i - 2))) {
                     double d0 = blockpos1.distanceSq(blockpos.getX(), blockpos.getY(), blockpos.getZ(), false);
                     int y1 = blockpos1.getY();
                     int y2 = blockpos.getY();
@@ -108,11 +108,11 @@ public class PalmTreeFeature extends Feature<BaseTreeFeatureConfig> {
                     if ((d0 <= 1 && (y1 > y2 || isStraight(blockpos1, blockpos))) ||
                             (d0 <= 4 && (y1 == y2 + 1 || y1 == y2 + 2)) ||
                             (d0 <= 7 && y1 == y2 + 2 && isStraight(blockpos1, blockpos)) ||
-                            (d0 <= i*1.75 && isStraight(blockpos1, blockpos) && y1 == y2 + 1) ||
-                            (d0 > i*1.75 && d0 < (i-2)*(i-2) && isStraight(blockpos1, blockpos) && y1 == y2) ||
-                            (d0 >= (i-2)*(i-2) && isStraight(blockpos1, blockpos) && y1 == y2 - (i - 6)) ||
-                            (d0 > i && d0 < (i-3)*(i-3) + 5 && isDiag(blockpos1, blockpos) && y1 == y2 + 1) ||
-                            (d0 > (i-3)*(i-3) + 5 && d0 <= (i-2)*(i-2) * Math.sqrt(2) && isDiag(blockpos1, blockpos) && y1 == y2)) {
+                            (d0 <= i * 1.75 && isStraight(blockpos1, blockpos) && y1 == y2 + 1) ||
+                            (d0 > i * 1.75 && d0 < (i - 2) * (i - 2) && isStraight(blockpos1, blockpos) && y1 == y2) ||
+                            (d0 >= (i - 2) * (i - 2) && isStraight(blockpos1, blockpos) && y1 == y2 - (i - 6)) ||
+                            (d0 > i && d0 < (i - 3) * (i - 3) + 5 && isDiag(blockpos1, blockpos) && y1 == y2 + 1) ||
+                            (d0 > (i - 3) * (i - 3) + 5 && d0 <= (i - 2) * (i - 2) * Math.sqrt(2) && isDiag(blockpos1, blockpos) && y1 == y2)) {
                         if (isAirOrLeaves(worldIn, blockpos1)) {
                             this.placeLeafAt(worldIn, blockpos1, random, config);
                         }

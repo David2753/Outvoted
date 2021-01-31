@@ -3,11 +3,9 @@ package io.github.how_bout_no.outvoted.entity;
 import io.github.how_bout_no.outvoted.config.OutvotedConfig;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -16,7 +14,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeConfigSpec;
 
 import static net.minecraft.entity.EntityType.SMALL_FIREBALL;
 
@@ -24,16 +21,8 @@ public class InfernoFireballEntity extends AbstractFireballEntity {
     public double explosionPower = OutvotedConfig.COMMON.infernofireballexplosionpower.get();
     public boolean doExplode = OutvotedConfig.COMMON.infernodofireballexplosion.get();
 
-    public InfernoFireballEntity(EntityType<? extends SmallFireballEntity> p_i50160_1_, World p_i50160_2_) {
-        super(p_i50160_1_, p_i50160_2_);
-    }
-
     public InfernoFireballEntity(World worldIn, LivingEntity shooter, double accelX, double accelY, double accelZ) {
         super(SMALL_FIREBALL, shooter, accelX, accelY, accelZ, worldIn);
-    }
-
-    public InfernoFireballEntity(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
-        super(SMALL_FIREBALL, x, y, z, accelX, accelY, accelZ, worldIn);
     }
 
     /**
@@ -51,7 +40,7 @@ public class InfernoFireballEntity extends AbstractFireballEntity {
                 if (!flag) {
                     entity.forceFireTicks(i);
                 } else if (entity1 instanceof LivingEntity) {
-                    this.applyEnchantments((LivingEntity)entity1, entity);
+                    this.applyEnchantments((LivingEntity) entity1, entity);
                 }
             }
 
@@ -78,7 +67,7 @@ public class InfernoFireballEntity extends AbstractFireballEntity {
     protected void onImpact(RayTraceResult result) {
         super.onImpact(result);
         if (!this.world.isRemote) {
-            if(doExplode) {
+            if (doExplode) {
                 boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.func_234616_v_()) && doExplode;
                 this.world.createExplosion((Entity) null, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.DESTROY : Explosion.Mode.NONE);
             }

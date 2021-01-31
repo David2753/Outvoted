@@ -1,6 +1,9 @@
 package io.github.how_bout_no.outvoted.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -9,12 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class ModSaplingBlock extends BushBlock implements IGrowable {
 
@@ -38,7 +39,8 @@ public class ModSaplingBlock extends BushBlock implements IGrowable {
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
         if (worldIn.getLight(pos.up()) >= 9 && random.nextInt(7) == 0) {
-            if (!worldIn.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+            if (!worldIn.isAreaLoaded(pos, 1))
+                return; // Forge: prevent loading unloaded chunks when checking neighbor's light
             this.placeTree(worldIn, pos, state, random);
         }
 
@@ -62,7 +64,7 @@ public class ModSaplingBlock extends BushBlock implements IGrowable {
     }
 
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
-        return (double)worldIn.rand.nextFloat() < 0.45D;
+        return (double) worldIn.rand.nextFloat() < 0.45D;
     }
 
     public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {

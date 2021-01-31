@@ -45,7 +45,7 @@ public class OutvotedConfig {
             restrictinferno = builder.comment("Restrict Infernos to spawn only in Nether Wastes or not").define("Restrict Spawning", true);
             builder.pop();
 
-            builder.comment("Hovering Inferno").push("Inferno Attack");
+            builder.comment("Hovering Inferno").push("attack");
             fireballcount = builder.comment("Amount of fireballs per attack").defineInRange("Fireball Count", 17, 1, 360);
             offsetangle = builder.comment("Angle between fireballs in degrees").defineInRange("Fireball Spacing", 4.0, 1, 359);
             maxdepressangle = builder.comment("Maximum downwards angle in degrees inferno can shoot fireballs. Prevents the Inferno from shooting straight down").defineInRange("Fireball Max Depression", 50.0, 1, 89);

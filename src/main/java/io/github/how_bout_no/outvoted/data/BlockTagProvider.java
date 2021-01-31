@@ -33,5 +33,13 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.PALM_SAPLING.get());
         getOrCreateBuilder(BlockTags.PLANKS)
                 .add(ModBlocks.PALM_PLANKS.get());
+        getOrCreateBuilder(BlockTags.WOODEN_FENCES)
+                .add(ModBlocks.PALM_FENCE.get());
+        getOrCreateBuilder(BlockTags.makeWrapperTag("forge:fences/wooden"))
+                .add(ModBlocks.PALM_FENCE.get());
+        getOrCreateBuilder(BlockTags.FENCE_GATES)
+                .add(ModBlocks.PALM_FENCE_GATE.get());
+        getOrCreateBuilder(BlockTags.makeWrapperTag("forge:fence_gates/wooden"))
+                .add(ModBlocks.PALM_FENCE_GATE.get());
     }
 }
